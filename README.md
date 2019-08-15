@@ -1,5 +1,12 @@
 ### Flutter UI clones
 
-1. Login UI : Shout-out to [Karthick Krishnamoorthy](https://dribbble.com/shots/6969883--001-Sign-up-form-DailyUI-challenge)
+1. Login UI
+Credits : [Karthick Krishnamoorthy](https://dribbble.com/shots/6969883--001-Sign-up-form-DailyUI-challenge)
 
 ![Screenshot](login_ui.png)
+
+
+2. Toy cart UI
+Credits : [Serhii Polyvanyi](https://dribbble.com/shots/6975747-Mobile-App-for-Toy-Store-Inner-screens)
+
+![Screenshot](toy_cart_ui.png)
