@@ -173,8 +173,6 @@ quantity""",
                               max: 100,
                               min: 0,
                               onChangeEnd: (value) {
-                                animationController.stop();
-                                scaleAnimationController.stop();
 
                                 animationController.reverse(
                                     from: animationController.value);
