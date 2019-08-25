@@ -24,7 +24,7 @@ class BalloonSlider extends StatefulWidget {
 
 class _BalloonSliderState extends State<BalloonSlider>
     with TickerProviderStateMixin {
-  AnimationController animationController, scaleAnimationController;
+  AnimationController _animationController, _scaleAnimationController;
   Animation<double> animation, scaleAnimation, thumbAnimation;
 
   double currentSlideValue = 0, prevSliderValue = 0;
@@ -39,27 +39,34 @@ class _BalloonSliderState extends State<BalloonSlider>
     super.initState();
 
     var animationDuration = Duration(milliseconds: 300);
-    animationController =
+    _animationController =
         AnimationController(vsync: this, duration: animationDuration);
-    scaleAnimationController =
+    _scaleAnimationController =
         AnimationController(vsync: this, duration: animationDuration);
 
     animation = Tween<double>(begin: 0, end: 35 * math.pi / 180)
-        .animate(animationController);
+        .animate(_animationController);
     scaleAnimation =
-        Tween<double>(begin: 0, end: 1).animate(scaleAnimationController);
+        Tween<double>(begin: 0, end: 1).animate(_scaleAnimationController);
     thumbAnimation =
-        Tween<double>(begin: 2, end: 1).animate(scaleAnimationController);
+        Tween<double>(begin: 2, end: 1).animate(_scaleAnimationController);
 
-    scaleAnimationController.addStatusListener((status) {
+    _scaleAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed)
-        animationController.forward(from: animationController.value);
+        _animationController.forward(from: _animationController.value);
     });
 
-    animationController.addStatusListener((status) {
+    _animationController.addStatusListener((status) {
       if (status == AnimationStatus.dismissed)
-        scaleAnimationController.reverse(from: scaleAnimationController.value);
+        _scaleAnimationController.reverse(from: _scaleAnimationController.value);
     });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _scaleAnimationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -174,12 +181,12 @@ quantity""",
                               min: 0,
                               onChangeEnd: (value) {
 
-                                animationController.reverse(
-                                    from: animationController.value);
+                                _animationController.reverse(
+                                    from: _animationController.value);
                               },
                               onChangeStart: (value) {
-                                scaleAnimationController.forward(
-                                    from: scaleAnimationController.value);
+                                _scaleAnimationController.forward(
+                                    from: _scaleAnimationController.value);
                               },
                             ));
                       },
