@@ -29,3 +29,11 @@ Credits : [Cuberto](https://dribbble.com/shots/6549207-Balloon-Slider-Control)
 Credits : [Cuberto](https://dribbble.com/shots/6654320-Animated-Onboarding-Screens)
 
 ![Screenshot](onboarding_ui.gif)
+
+
+
+5. Rating UI
+
+Credits : [Cuberto](https://dribbble.com/shots/7060121-Rate-your-ride-animated-SWIFT)
+
+![Screenshot](rating_ui.gif)
