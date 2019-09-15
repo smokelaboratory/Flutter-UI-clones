@@ -42,6 +42,7 @@ class _PerformanceGraphState extends State<PerformanceGraph>
     _animation =
         Tween<double>(begin: 0, end: 100.0).animate(_animationController);
 
+    _animationController.forward(from: 0.0);
   }
 
   @override
@@ -89,7 +90,7 @@ class _PerformanceGraphState extends State<PerformanceGraph>
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       _animationController.forward(from: 0.0);
                     },
                     child: Container(
@@ -293,11 +294,10 @@ class GraphText extends CustomPainter {
     return true;
   }
 
-  TextPainter _getTextPainter(
-      {String subject,
-      double rating,
-      TextDirection textDirection = TextDirection.ltr,
-      bool isGravityCenter = false}) {
+  TextPainter _getTextPainter({String subject,
+    double rating,
+    TextDirection textDirection = TextDirection.ltr,
+    bool isGravityCenter = false}) {
     return TextPainter(
         text: TextSpan(children: [
           TextSpan(
