@@ -40,3 +40,10 @@ Credits : [Cuberto](https://dribbble.com/shots/7060121-Rate-your-ride-animated-S
 Credits : [Selecto](https://dribbble.com/shots/7112902-Soccer-player-profile)
 
 ![Screenshot](performance_graph.gif)
+
+
+7. Menu interaction concept
+
+Credits : [Oleg Frolov](https://dribbble.com/shots/7197834-Menu-Interaction-Concept)
+
+![Screenshot](menu_interaction_concept.gif)
