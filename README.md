@@ -40,3 +40,9 @@
 (Credits : [Oleg Frolov](https://dribbble.com/shots/7197834-Menu-Interaction-Concept))
 
 ![Screenshot](menu_interaction_concept.gif)
+
+
+8. Swipe to respond
+(Credits : [Cuberto](https://dribbble.com/shots/5961284-Gooey-Cell-Open-Source))
+
+![Screenshot](swipe_to_respond.gif)
