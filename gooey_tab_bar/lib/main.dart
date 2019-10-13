@@ -1,417 +1,325 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-import 'CartItemModel.dart';
+void main() => runApp(MyApp());
 
-void main() => runApp(ToyApp());
-
-class ToyApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      home: TabButton(),
       debugShowCheckedModeBanner: false,
-      home: ToyCart(),
     );
   }
 }
 
-class ToyCart extends StatefulWidget {
+const double _maxDragHeight = 230.0;
+const double _bottomMargin = 20.0;
+const double _btSize = 60.0;
+const Color _themeColor = Color(0xff64c6fa);
+
+class TabButton extends StatefulWidget {
   @override
-  _ToyCartState createState() => _ToyCartState();
+  _TabButtonState createState() => _TabButtonState();
 }
 
-class _ToyCartState extends State<ToyCart> {
+class _TabButtonState extends State<TabButton> with TickerProviderStateMixin {
+  AnimationController _dragAnimCont,
+      _gooeyAnimCont,
+      _opacAnimCont,
+      _menuAnimCont,
+      _btStyleAnimCont;
+  Animation<double> _dragAnim, _gooeyAnim, _opacAnim, _menuAnim;
+  Animation<Color> _btBgAnim, _iconAnim;
+
+  double _btDragFactor = 0.0;
+  bool _isMaxReached = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    var _duration = Duration(milliseconds: 500);
+
+    _dragAnimCont = AnimationController(vsync: this, duration: _duration);
+    _btStyleAnimCont = AnimationController(vsync: this, duration: _duration);
+    _gooeyAnimCont = AnimationController(vsync: this, duration: _duration);
+    _opacAnimCont = AnimationController(vsync: this, duration: _duration);
+    _menuAnimCont = AnimationController(vsync: this, duration: _duration);
+
+    _menuAnim = Tween(begin: 0.0, end: 1.0).animate(_menuAnimCont);
+    _dragAnim = Tween(begin: 0.0, end: -_maxDragHeight).animate(_dragAnimCont);
+    _gooeyAnim =
+        Tween(begin: 0.0, end: -_maxDragHeight).animate(_gooeyAnimCont);
+    _opacAnim = Tween(begin: 0.0, end: 1.0).animate(_opacAnimCont);
+    _iconAnim = ColorTween(begin: Colors.white, end: _themeColor)
+        .animate(_btStyleAnimCont);
+    _btBgAnim = ColorTween(begin: _themeColor, end: Colors.white)
+        .animate(_btStyleAnimCont);
+
+    _gooeyAnimCont.addListener(() {
+      if (_gooeyAnimCont.value > 0.8 && _isMaxReached == false) {
+        _isMaxReached = true;
+        _btStyleAnimCont.forward();
+        _menuAnimCont.forward();
+        _dragAnimCont.forward(from: _dragAnimCont.value);
+        _gooeyAnimCont.reverse(from: _gooeyAnimCont.value);
+      }
+    });
+
+    _dragAnimCont.addListener(() {
+      if (_dragAnimCont.status == AnimationStatus.dismissed) {
+        _isMaxReached = false;
+        _btDragFactor = 0.0;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _dragAnimCont.dispose();
+    _gooeyAnimCont.dispose();
+    _opacAnimCont.dispose();
+    _btStyleAnimCont.dispose();
+    _menuAnimCont.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
+        body: Stack(
           children: <Widget>[
-            StackLayer(layerType: LayerType.LIST),
-            StackLayer(layerType: LayerType.SUB_TOTAL),
-            StackLayer(layerType: LayerType.CHECK_OUT),
-            StackLayer(layerType: LayerType.TOOLBAR)
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-const double _sectionHeight = 80;
-const double _arcSize = 30;
-const double _padding = 32;
-
-class StackLayer extends StatelessWidget {
-  final LayerType layerType;
-  List<CartItemModel> cartItemList;
-
-  StackLayer({@required this.layerType}) {
-    cartItemList = List<CartItemModel>();
-    cartItemList.add(CartItemModel(
-        "Shawn, The Sheep", "2", "\$ 180", "images/shawn.png", 0xffb0deff));
-    cartItemList.add(
-        CartItemModel("Bitzer", "1", "\$ 60", "images/bitzer.png", 0xffcdebe1));
-    cartItemList.add(
-        CartItemModel("Mr. X", "1", "\$ 50", "images/mr_x.png", 0xffdbe4ff));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
-    return ClipPath(
-      clipper: LayerClipper(layerType),
-      child: Container(
-        width: size.width,
-        height: size.height,
-        color: Color(_getLayerColor(layerType)),
-        child: Align(
-            alignment: _getLayerChildAlignment(layerType),
-            child: _getLayerChild(layerType)),
-      ),
-    );
-  }
-
-  Widget _getLayerChild(LayerType layerType) {
-    switch (layerType) {
-      case LayerType.TOOLBAR:
-        return Container(
-          height: _sectionHeight + _arcSize / 2,
-          margin: const EdgeInsets.only(left: _padding, right: _padding),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                  size: 22,
-                ),
-                TextWidget(
-                    text: "Shopping Cart",
-                    textColor: Colors.black,
-                    textSize: 22,
-                    fontWeight: FontWeight.w700),
-                Icon(
-                  Icons.delete_outline,
-                  color: Colors.black,
-                  size: 22,
-                )
-              ],
-            ),
-          ),
-        );
-        break;
-      case LayerType.CHECK_OUT:
-        return SizedBox(
-          height: _sectionHeight,
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                TextWidget(
-                    text: "Check Out",
-                    textColor: Colors.white,
-                    textSize: 18,
-                    fontWeight: FontWeight.w600),
-                SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                  size: 17,
-                )
-              ],
-            ),
-          ),
-        );
-        break;
-      case LayerType.SUB_TOTAL:
-        return Container(
-          height: _sectionHeight,
-          margin: const EdgeInsets.only(
-              bottom: 80, left: _padding, right: _padding),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                TextWidget(
-                    text: "Subtotal",
-                    textColor: Color(0xff64727e),
-                    textSize: 15,
-                    fontWeight: FontWeight.w600),
-                TextWidget(
-                    text: "\$ 290",
-                    textColor: Colors.black,
-                    textSize: 20,
-                    fontWeight: FontWeight.w700),
-              ],
-            ),
-          ),
-        );
-        break;
-      default:
-        return Container(
-          padding: const EdgeInsets.only(
-              left: _padding,
-              right: _padding,
-              top: _sectionHeight + _arcSize + 5,
-              bottom: 2 * _sectionHeight),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextWidget(
-                  text: "Your Toys",
-                  textColor: Colors.black,
-                  textSize: 27,
-                  fontWeight: FontWeight.w700),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                      color: Color(0xff979fa7),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                  children: <TextSpan>[
-                    TextSpan(text: 'You have '),
-                    TextSpan(
-                        text: cartItemList.length.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(text: ' items in your cart'),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 20, bottom: 15),
-                  itemBuilder: (_, pos) {
-                    return CartItem(
-                        image: cartItemList[pos].image,
-                        name: cartItemList[pos].name,
-                        qty: cartItemList[pos].qty,
-                        price: cartItemList[pos].price,
-                        bgColor: cartItemList[pos].bgColor);
-                  },
-                  separatorBuilder: (_, __) {
-                    return SizedBox(height: 20);
-                  },
-                  itemCount: cartItemList.length,
-                  shrinkWrap: true,
-                ),
-              )
-            ],
-          ),
-        );
-        break;
-    }
-  }
-
-  Alignment _getLayerChildAlignment(LayerType layerType) {
-    switch (layerType) {
-      case LayerType.TOOLBAR:
-        return Alignment.topCenter;
-        break;
-      case LayerType.CHECK_OUT:
-        return Alignment.bottomCenter;
-        break;
-      case LayerType.SUB_TOTAL:
-        return Alignment.bottomCenter;
-        break;
-      default:
-        return Alignment.topLeft;
-        break;
-    }
-  }
-}
-
-int _getLayerColor(LayerType layerType) {
-  switch (layerType) {
-    case LayerType.TOOLBAR:
-      return 0xffdae9f7;
-      break;
-    case LayerType.CHECK_OUT:
-      return 0xffff6138;
-      break;
-    case LayerType.SUB_TOTAL:
-      return 0xffffffff;
-      break;
-    default:
-      return 0xfff0f5fa;
-      break;
-  }
-}
-
-class TextWidget extends StatelessWidget {
-  final String text;
-  final Color textColor;
-  final double textSize;
-  final FontWeight fontWeight;
-
-  TextWidget({this.text, this.textColor, this.textSize, this.fontWeight});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(text,
-        style: TextStyle(
-            color: textColor,
-            fontSize: textSize,
-            fontFamily: "Khula",
-            fontWeight: fontWeight));
-  }
-}
-
-class LayerClipper extends CustomClipper<Path> {
-  final LayerType layerType;
-
-  LayerClipper(this.layerType);
-
-  @override
-  Path getClip(Size size) {
-    return _getClipPath(layerType, size);
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
-
-  Path _getClipPath(LayerType layerType, Size size) {
-    switch (layerType) {
-      case LayerType.TOOLBAR:
-        return Path()
-          ..lineTo(size.width, 0)
-          ..lineTo(size.width, _sectionHeight)
-          ..arcToPoint(
-              Offset(size.width - _arcSize, _sectionHeight + _arcSize / 2),
-              radius: Radius.circular(_arcSize))
-          ..lineTo(_arcSize, _sectionHeight + _arcSize / 2)
-          ..arcToPoint(Offset(0, _sectionHeight + _arcSize),
-              radius: Radius.circular(_arcSize), clockwise: false);
-        break;
-      case LayerType.CHECK_OUT:
-        var _startHeight = size.height - _sectionHeight;
-        return Path()
-          ..lineTo(0, _startHeight - _arcSize)
-          ..arcToPoint(Offset(_arcSize, _startHeight),
-              radius: Radius.circular(_arcSize), clockwise: false)
-          ..lineTo(size.width - _arcSize, _startHeight)
-          ..arcToPoint(Offset(size.width, _startHeight + _arcSize),
-              radius: Radius.circular(_arcSize))
-          ..lineTo(size.width, size.height)
-          ..lineTo(0, size.height);
-        break;
-      case LayerType.SUB_TOTAL:
-        var _startHeight = size.height - 2 * _sectionHeight;
-        return Path()
-          ..lineTo(0, _startHeight - _arcSize)
-          ..arcToPoint(Offset(_arcSize, _startHeight),
-              radius: Radius.circular(_arcSize), clockwise: false)
-          ..lineTo(size.width - _arcSize, _startHeight)
-          ..arcToPoint(Offset(size.width, _startHeight + _arcSize),
-              radius: Radius.circular(_arcSize))
-          ..lineTo(size.width, size.height)
-          ..lineTo(0, size.height);
-        break;
-      default:
-        return null;
-        break;
-    }
-  }
-}
-
-class CartItem extends StatelessWidget {
-  final String image, name, qty, price;
-  final int bgColor;
-
-  CartItem({this.image, this.name, this.qty, this.price, this.bgColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(10),
-          height: 70,
-          width: 70,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Color(bgColor)),
-          child: Image(image: AssetImage(image)),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: TextWidget(
-                      text: name,
-                      textSize: 14,
-                      textColor: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
+            AnimatedBuilder(
+              animation: _opacAnim,
+              builder: (_, __) {
+                return Opacity(
+                  opacity: 1 - _opacAnim.value,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                          child: _getTv(string: "Flutter",
+                              color: Colors.blueAccent,
+                              weight: FontWeight.w700,
+                              size: 50.0),
+                        ),
+                      ),
+                      Container(
+                        //24 is default icon size
+                        margin: const EdgeInsets.only(
+                            bottom: _bottomMargin + _btSize / 2 - 12),
+                        child: Theme(
+                          data: ThemeData(
+                              iconTheme: IconThemeData(
+                                  color: Colors.blueAccent)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Icon(Icons.image),
+                              Icon(Icons.message),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Icon(Icons.search),
+                              Icon(Icons.add_shopping_cart),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  TextWidget(
-                    text: price,
-                    textSize: 15,
-                    textColor: Colors.black,
-                    fontWeight: FontWeight.w700,
+                );
+              },
+            ),
+            AnimatedBuilder(
+              animation: _opacAnim,
+              builder: (_, __) {
+                return Opacity(
+                  opacity: _opacAnim.value,
+                  child: AnimatedBuilder(
+                    animation: _gooeyAnim,
+                    builder: (_, __) {
+                      return SizedBox(
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        child: CustomPaint(
+                          painter: GooeyPainter(_gooeyAnim.value),
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  CartButton(buttonType: ButtonType.MINUS),
-                  SizedBox(
-                    width: 8,
+                );
+              },
+            ),
+            AnimatedBuilder(
+              animation: _dragAnim,
+              builder: (_, __) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: _bottomMargin),
+                  alignment: Alignment.bottomCenter,
+                  child: Transform.translate(
+                    offset: Offset(0.0, _dragAnim.value),
+                    child: GestureDetector(
+                        onTap: () {
+                          if (_isSafeToAnimate()) {
+                            if (_isMaxReached) {
+                              _btStyleAnimCont.reverse();
+                              _menuAnimCont.reverse();
+                              _dragAnimCont.reverse();
+                              _opacAnimCont.reverse();
+                            } else {
+                              _gooeyAnimCont.forward();
+                              _dragAnimCont.forward();
+                              _opacAnimCont.forward();
+                            }
+                          }
+                        },
+                        onVerticalDragStart: (data) {
+                          if (!_isMaxReached && _isSafeToAnimate())
+                            _opacAnimCont.forward();
+                        },
+                        onVerticalDragEnd: (data) {
+                          if (!_isMaxReached && _isSafeToAnimate()) {
+                            _gooeyAnimCont.reverse();
+                            _dragAnimCont.reverse();
+                            _opacAnimCont.reverse();
+                            _btStyleAnimCont.reverse();
+                          }
+                        },
+                        onVerticalDragUpdate: (data) {
+                          if (_btDragFactor <= 0 &&
+                              _isSafeToAnimate() &&
+                              _btDragFactor.abs() <= _maxDragHeight &&
+                              !_isMaxReached) {
+                            _btDragFactor += data.primaryDelta;
+                            _dragAnimCont.value =
+                                _btDragFactor.abs() / _maxDragHeight;
+                            _gooeyAnimCont.value = _dragAnimCont.value;
+                          }
+                        },
+                        child: AnimatedBuilder(
+                            animation: _iconAnim,
+                            builder: (_, __) {
+                              return AnimatedBuilder(
+                                  animation: _btBgAnim,
+                                  builder: (_, __) {
+                                    return Container(
+                                      height: _btSize,
+                                      width: _btSize,
+                                      decoration: BoxDecoration(
+                                          color: _btBgAnim.value,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(_btSize / 2))),
+                                      child: Transform.rotate(
+                                        angle:
+                                        pi / 180 * _btStyleAnimCont.value * 45,
+                                        child: Icon(
+                                          Icons.add,
+                                          color: _iconAnim.value,
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            })),
                   ),
-                  SizedBox(
-                    width: 10,
-                    child: Center(
-                      child: TextWidget(
-                        text: qty,
-                        textSize: 12,
-                        textColor: Color(0xff64727e),
-                        fontWeight: FontWeight.w600,
+                );
+              },
+            ),
+            AnimatedBuilder(
+              animation: _menuAnim,
+              builder: (_, __) {
+                return Container(
+                  alignment: Alignment.bottomCenter,
+                  margin: const EdgeInsets.only(bottom: _bottomMargin * 1.5),
+                  child: Visibility(
+                    visible: _isMaxReached,
+                    child: Opacity(
+                      opacity: _menuAnim.value,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          _getTv(string: "Reminder"),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _getTv(string: "Camera"),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _getTv(string: "Attachment"),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _getTv(string: "Text Note"),
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  CartButton(buttonType: ButtonType.PLUS)
-                ],
-              )
-            ],
-          ),
-        )
-      ],
+                );
+              },
+            )
+          ],
+        ));
+  }
+
+  bool _isSafeToAnimate() {
+    return !_dragAnimCont.isAnimating;
+  }
+
+  Text _getTv(
+      {string, color = Colors.white, size = 20.0, weight = FontWeight.w600}) {
+    return Text(
+      string,
+      style: TextStyle(color: color, fontSize: size,
+          fontWeight: weight,
+          fontFamily: "Khula"),
     );
   }
 }
 
-class CartButton extends StatelessWidget {
-  final ButtonType buttonType;
+class GooeyPainter extends CustomPainter {
+  double _gooeyDragFactor;
 
-  CartButton({this.buttonType});
+  GooeyPainter(this._gooeyDragFactor);
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        child: Icon(
-          buttonType == ButtonType.MINUS ? Icons.remove : Icons.add,
-          size: 10,
-        ),
-      ),
-    );
+  void paint(Canvas canvas, Size size) {
+    var radius = max(_maxDragHeight * 3 / 4, _maxDragHeight + _gooeyDragFactor);
+    var height = size.height +
+        _gooeyDragFactor -
+        (_gooeyDragFactor != 0.0
+            ? _bottomMargin
+            : 0.0); //to add bottom margin in gooey bg and to remove it in reverse
+    var arcGap = -_gooeyDragFactor / 10; //factor is negative
+
+    canvas.drawPath(
+        Path()
+          ..lineTo(size.width, 0)..lineTo(size.width, size.height)
+          ..arcToPoint(Offset(size.width / 2 + arcGap, height),
+              radius: Radius.circular(radius))..arcToPoint(
+            Offset(size.width / 2 - arcGap, height),
+            radius: Radius.circular(1), clockwise: false)..arcToPoint(
+          Offset(0, size.height),
+          radius: Radius.circular(radius),
+        )
+          ..close(),
+        Paint()
+          ..color = _themeColor
+          ..style = PaintingStyle.fill);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }
-
-enum ButtonType { PLUS, MINUS }
-enum LayerType { TOOLBAR, LIST, SUB_TOTAL, CHECK_OUT }
