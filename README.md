@@ -46,3 +46,9 @@
 (Credits : [Cuberto](https://dribbble.com/shots/5961284-Gooey-Cell-Open-Source))
 
 ![Screenshot](swipe_to_respond.gif)
+
+
+9. Gooey Tab Bar
+(Credits : [Cuberto](https://dribbble.com/shots/6233130-Gooey-Tab-Bar))
+
+![Screenshot](gooey_tab_bar.gif)
