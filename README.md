@@ -64,3 +64,9 @@
 (Credits : [Cuberto](https://dribbble.com/shots/6482411-Alternative-Facebook-Menu))
 
 ![Screenshot](tab_menu.gif)
+
+
+12. Progress Indicator
+(Credits : [Cuberto](https://dribbble.com/shots/6441572-Water-electrolyte-Imbalance-App))
+
+![Screenshot](progress_indicator.gif)
