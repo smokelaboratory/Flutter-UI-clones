@@ -76,3 +76,9 @@
 (Credits : [Dimest](https://dribbble.com/shots/4201234-Tab-bar-icons))
 
 ![Screenshot](tab_change_anim.gif)
+
+
+14. Tab change animation 2
+(Credits : [Cuberto](https://dribbble.com/shots/5660844-Flashy-Tab-Bar-Open-Source))
+
+![Screenshot](tab_change_anim_2.gif)
