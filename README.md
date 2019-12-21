@@ -82,3 +82,10 @@
 (Credits : [Cuberto](https://dribbble.com/shots/5660844-Flashy-Tab-Bar-Open-Source))
 
 ![Screenshot](tab_change_anim_2.gif)
+
+
+15. Progress loaders
+(Credits : [Gilbert BG](https://dribbble.com/shots/6255364-X-Loader-Animation))
+(Credits : [Anas M. ElGendy](https://dribbble.com/shots/6122776-Crazy-Frog-Loading))
+
+![Screenshot](loaders_1.gif)
