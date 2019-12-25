@@ -85,7 +85,12 @@
 
 
 15. Progress loaders
-(Credits : [Gilbert BG](https://dribbble.com/shots/6255364-X-Loader-Animation))
-(Credits : [Anas M. ElGendy](https://dribbble.com/shots/6122776-Crazy-Frog-Loading))
+(Credits : [Gilbert BG](https://dribbble.com/shots/6255364-X-Loader-Animation), [Anas M. ElGendy](https://dribbble.com/shots/6122776-Crazy-Frog-Loading))
 
 ![Screenshot](loaders_1.gif)
+
+
+15. Add to bag
+(Credits : [Theo Lopez Carbajal ✈](https://dribbble.com/shots/4483347-Add-To-Bag))
+
+![Screenshot](add_to_bag.gif)
