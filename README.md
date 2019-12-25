@@ -90,7 +90,7 @@
 ![Screenshot](loaders_1.gif)
 
 
-15. Add to bag
+16. Add to bag
 (Credits : [Theo Lopez Carbajal ✈](https://dribbble.com/shots/4483347-Add-To-Bag))
 
 ![Screenshot](add_to_bag.gif)
