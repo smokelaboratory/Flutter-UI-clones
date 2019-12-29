@@ -94,3 +94,9 @@
 (Credits : [Theo Lopez Carbajal ✈](https://dribbble.com/shots/4483347-Add-To-Bag))
 
 ![Screenshot](add_to_bag.gif)
+
+
+17. Download progress
+(Credits : [TANG](https://dribbble.com/shots/5592300-Download))
+
+![Screenshot](download_progress.gif)
