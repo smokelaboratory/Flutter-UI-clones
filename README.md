@@ -100,3 +100,9 @@
 (Credits : [TANG](https://dribbble.com/shots/5592300-Download))
 
 ![Screenshot](download_progress.gif)
+
+
+18. Fluid scroll
+(Credits : [Virgil Pana](https://dribbble.com/shots/3868232-Fluid-Slider))
+
+![Screenshot](fluid_scroll.gif)
