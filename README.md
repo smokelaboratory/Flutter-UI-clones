@@ -101,7 +101,14 @@
 
 ![Screenshot](download_progress.gif)
 
-18. Progress loaders
+
+18. Fluid scroll
+(Credits : [Virgil Pana](https://dribbble.com/shots/3868232-Fluid-Slider))
+
+![Screenshot](fluid_scroll.gif)
+
+
+19. Progress loaders
 (Credits : [Helen Tang](https://dribbble.com/shots/6276472-loader), [Oleg Frolov](https://dribbble.com/shots/3492197-Meta-loader))
 
 ![Screenshot](loaders_2.gif)
