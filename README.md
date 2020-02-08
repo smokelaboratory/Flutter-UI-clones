@@ -100,3 +100,8 @@
 (Credits : [TANG](https://dribbble.com/shots/5592300-Download))
 
 ![Screenshot](download_progress.gif)
+
+18. Progress loaders
+(Credits : [Helen Tang](https://dribbble.com/shots/6276472-loader), [Oleg Frolov](https://dribbble.com/shots/3492197-Meta-loader))
+
+![Screenshot](loaders_2.gif)

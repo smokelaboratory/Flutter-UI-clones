@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:progress_loaders/loader_1.dart';
+import 'package:progress_loaders/loader_3.dart';
 import 'package:progress_loaders/loader_2.dart';
+import 'package:progress_loaders/loader_4.dart';
 
 void main() => runApp(MaterialApp(
       home: Screen1(),
@@ -31,14 +33,14 @@ class _Screen1State extends State<Screen1> {
           children: <Widget>[
             Expanded(
               child: Container(
-                color: Colors.lightGreenAccent,
-                child: Loader1(),
+                color: Colors.brown,
+                child: Loader3(),
               ),
             ),
             Expanded(
               child: Container(
-                color: Colors.brown,
-                child: Loader2(),
+                color: Colors.lightGreenAccent,
+                child: Loader4(),
               ),
             ),
           ],
